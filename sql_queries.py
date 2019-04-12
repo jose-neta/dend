@@ -39,7 +39,7 @@ song_table_create = ("""
   	title text,
   	artist_id text,
   	year int,
-  	duration DECIMAL(13,2)
+  	duration DECIMAL(13,6)
   );
 """)
 
@@ -49,8 +49,8 @@ artist_table_create = ("""
   	artist_id text primary key,
   	name text,
   	location text,
-  	lattitude DECIMAL(13,2),
-  	longitude DECIMAL(13,2)
+  	lattitude DECIMAL(13,6),
+  	longitude DECIMAL(13,6)
   );
 """)
 
