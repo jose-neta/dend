@@ -86,6 +86,8 @@ artist_table_insert = ("""
 """)
 
 time_table_insert = ("""
+  INSERT INTO public.time(start_time, hour, day, week, month, year, weekday)
+  VALUES(%s, %s, %s, %s, %s, %s, %s);
 """)
 
 # FIND SONGS
