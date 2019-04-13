@@ -12,7 +12,7 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 songplay_table_create = ("""
   CREATE TABLE song_plays(
     songplay_id int PRIMARY KEY, 
-    start_time int REFERENCES time (start_time), 
+    start_time bigint REFERENCES time (start_time), 
     user_id int REFERENCES users (user_id),
     song_id text REFERENCES songs (song_id),
     artist_id text REFERENCES artists (artist_id),
@@ -57,7 +57,7 @@ artist_table_create = ("""
 # dim table
 time_table_create = ("""
   CREATE TABLE time(
-    start_time int primary key,
+    start_time bigint primary key,
     hour int,
     day int,
     week int,
