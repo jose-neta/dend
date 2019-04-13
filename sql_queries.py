@@ -76,13 +76,14 @@ user_table_insert = ("""
 """)
 
 song_table_insert = ("""
-  INSERT INTO songs (song_id, title, artist_id, year, duration) 
+  INSERT INTO public.songs(song_id, title, artist_id, year, duration) 
   VALUES (%s, %s, %s, %s, %s);
 """)
 
 artist_table_insert = ("""
+  INSERT INTO public.artists(artist_id, name, location, lattitude, longitude)
+  VALUES(%s, %s, %s, %s, %s);
 """)
-
 
 time_table_insert = ("""
 """)
