@@ -73,6 +73,8 @@ songplay_table_insert = ("""
 """)
 
 user_table_insert = ("""
+  INSERT INTO public.users(user_id, first_name, last_name, gender, level)
+  VALUES(%s, %s, %s, %s, %s)
 """)
 
 song_table_insert = ("""
