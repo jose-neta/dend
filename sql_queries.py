@@ -70,6 +70,8 @@ time_table_create = ("""
 # INSERT RECORDS
 
 songplay_table_insert = ("""
+  INSERT INTO public.song_plays(start_time, user_id, song_id, artist_id, level, session_id, location, user_agent)
+  VALUES(%s, %s, %s, %s, %s, %s, %s, %s);
 """)
 
 user_table_insert = ("""
@@ -94,7 +96,14 @@ time_table_insert = ("""
 
 # FIND SONGS
 
+# get songid and artistid from song and artist tables
 song_select = ("""
+  SELECT s.song_id, s.artist_id FROM songs s 
+    JOIN artists a on s.artist_id = a.artist_id
+  WHERE 1 = 1
+    AND s.title = %s
+    AND a.name = %s
+    AND s.duration = %s
 """)
 
 # QUERY LISTS
