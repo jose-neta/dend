@@ -6,7 +6,7 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
-    
+
     # open song file
     df = pd.read_json(filepath, typ='series')
 
@@ -21,11 +21,35 @@ def process_song_file(cur, filepath):
     cur.execute(artist_table_insert, artist_data)
 
 
+def process_log_file(cur, filepath):
+
+    # open log file
+    df = pd.read_json(filepath, lines=True)
+
+    # filter by NextSong action
+    is_song = df['page'] == 'NextSong'
+    df = df[is_song]
+
+    # convert timestamp column to datetime
+    t = pd.to_datetime(df['ts'], unit='ms')
+
+    # insert time data records
+    time_data = (df['ts'].tolist(), t.dt.hour.tolist(), t.dt.day.tolist(),
+                 t.dt.dayofweek.tolist(), t.dt.month.tolist(),
+                 t.dt.year.tolist(), t.dt.dayofweek.tolist())
+    column_labels = ("timestamp", "hour", "day",
+                     "week", "month", "year", "weekday")
+    dictionary = dict(zip(column_labels, time_data))
+    time_df = df.from_dict(dictionary, orient='columns')
+
+    for i, row in time_df.iterrows():
+        print(row)
+        cur.execute(time_table_insert, list(row))
 
 
 
 def process_data(cur, conn, filepath, func):
-    
+
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -50,7 +74,7 @@ def main():
     cur = conn.cursor()
 
     process_data(cur, conn, filepath='data/song_data', func=process_song_file)
-    #process_data(cur, conn, filepath='data/log_data', func=process_log_file)
+    process_data(cur, conn, filepath='data/log_data', func=process_log_file)
 
     conn.close()
 
