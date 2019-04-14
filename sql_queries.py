@@ -11,7 +11,7 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 # fact table
 songplay_table_create = ("""
   CREATE TABLE song_plays(
-    songplay_id int PRIMARY KEY, 
+    songplay_id serial PRIMARY KEY,
     start_time bigint REFERENCES time (start_time), 
     user_id int REFERENCES users (user_id),
     song_id text REFERENCES songs (song_id),
