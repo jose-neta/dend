@@ -46,6 +46,27 @@ def process_log_file(cur, filepath):
         print(row)
         cur.execute(time_table_insert, list(row))
 
+    # load user table
+    user_data = (df.userId.tolist(), df.firstName.tolist(), df.lastName.tolist(),
+                 df.gender.tolist(), df.level.tolist())
+    column_labels = ("user_id", "first_name", "last_name", "gender", "level")
+    dictionary = dict(zip(column_labels, user_data))
+    user_df = time_df = df.from_dict(dictionary, orient='columns')
+
+    # insert user records
+    for i, row in user_df.iterrows():
+        cur.execute(user_table_insert, row)
+
+    # insert songplay records
+    for index, row in df.iterrows():
+
+        # get songid and artistid from song and artist tables
+        results = cur.execute(song_select, (row.song, row.artist, row.length))
+        songid, artistid = results if results else None, None
+
+        # insert songplay record
+        songplay_data = (row.ts, row.userId, songid, artistid, row.level, row.sessionId, row.location, row.userAgent)
+        cur.execute(songplay_table_insert, songplay_data)
 
 
 def process_data(cur, conn, filepath, func):
