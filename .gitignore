@@ -1,0 +1,9 @@
+.env
+.DS_Store
+lessons
+
+data-modeling-with-postgres/Makefile
+data-modeling-with-postgres/dot.env.sample
+data-modeling-with-postgres/local-demo-setup.sh
+data-modeling-with-postgres/sbin/
+data-modeling-with-postgres/schema/
