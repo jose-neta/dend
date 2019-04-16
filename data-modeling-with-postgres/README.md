@@ -11,7 +11,7 @@ diagram for the star schema changed a tad.
 
 #### before removing PK
 
-![before](start_before_removing_pk.png | width=250)
+![before](start_before_removing_pk.png)
 
 #### after removing PK
 
