@@ -15,7 +15,7 @@ diagram for the star schema changed a tad.
 
 #### after removing PK
 
-![after](start_after_removing_pk.png =250x250)
+![after](start_after_removing_pk.png)
 
 ### There are no songplays
 
