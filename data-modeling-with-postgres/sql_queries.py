@@ -81,12 +81,12 @@ user_table_insert = ("""
 
 song_table_insert = ("""
   INSERT INTO public.songs(song_id, title, artist_id, year, duration) 
-  VALUES (%s, %s, %s, %s, %s);
+  VALUES (%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING;
 """)
 
 artist_table_insert = ("""
   INSERT INTO public.artists(artist_id, name, location, lattitude, longitude)
-  VALUES(%s, %s, %s, %s, %s);
+  VALUES(%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING;
 """)
 
 time_table_insert = ("""
