@@ -12,8 +12,8 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 songplay_table_create = ("""
   CREATE TABLE song_plays(
     songplay_id serial PRIMARY KEY,
-    start_time bigint REFERENCES time (start_time), 
-    user_id int REFERENCES users (user_id),
+    start_time bigint NOT NULL, 
+    user_id int NOT NULL REFERENCES users (user_id),
     song_id text REFERENCES songs (song_id),
     artist_id text REFERENCES artists (artist_id),
     level text,
@@ -57,7 +57,7 @@ artist_table_create = ("""
 # dim table
 time_table_create = ("""
   CREATE TABLE time(
-    start_time bigint primary key,
+    start_time bigint,
     hour int,
     day int,
     week int,
@@ -89,15 +89,6 @@ artist_table_insert = ("""
   VALUES(%s, %s, %s, %s, %s);
 """)
 
-# FIXME this table is assuming that timestamps even in ms will not collide!
-# that's not true and that's why I'm using on CONFLICT rule, which is bad
-# because I'm ignoring all duplicated events.
-#
-# The offending data
-# data/log_data/2018/11/2018-11-23-events.json
-# 119:{"artist":"Shawn McDonald","auth":"Logged In","firstName":"Devin","gender":"M","itemInSession":0,"lastName":"Larson","length":358.89587,"level":"free","location":"Tampa-St. Petersburg-Clearwater, FL","method":"PUT","page":"NextSong","registration":1541045604796.0,"sessionId":765,"song":"Lovely","status":200,"ts":1542984111796,"userAgent":"Mozilla\/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko\/20100101 Firefox\/31.0","userId":"60"}
-# 120:{"artist":"El Cuarteto De Nos","auth":"Logged In","firstName":"Avery","gender":"F","itemInSession":2,"lastName":"Watkins","length":241.44934,"level":"paid","location":"San Jose-Sunnyvale-Santa Clara, CA","method":"PUT","page":"NextSong","registration":1540871783796.0,"sessionId":691,"song":"Invierno Del 92","status":200,"ts":1542984111796,"userAgent":"Mozilla\/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko\/20100101 Firefox\/31.0","userId":"30"}
-# 
 time_table_insert = ("""
   INSERT INTO public.time(start_time, hour, day, week, month, year, weekday)
   VALUES(%s, %s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING; 
