@@ -6,6 +6,17 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    """Reads a json file from the song_data folder.
+
+    Reads information of songs and artists and saves them to songs and
+    artists tables in the database.
+
+    Parameters:
+        cur: DB cursor
+
+    Returns:
+        None
+    """
 
     # open song file
     df = pd.read_json(filepath, typ='series')
@@ -22,6 +33,19 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """Reads a json file from the log_data folder.
+
+    Filters all songs logs, reads information of artist, time occurence
+    and user playing the song and save them to song_plays and time tables
+    in the database.
+
+    Parameters: 
+        cur: DB cursor
+        filepath (str): file path for log file
+
+    Returns:
+        None
+    """
 
     # open log file
     df = pd.read_json(filepath, lines=True)
@@ -65,11 +89,27 @@ def process_log_file(cur, filepath):
         songid, artistid = results if results else None, None
 
         # insert songplay record
-        songplay_data = (row.ts, row.userId, songid, artistid, row.level, row.sessionId, row.location, row.userAgent)
+        songplay_data = (row.ts, row.userId, songid, artistid,
+                         row.level, row.sessionId, row.location, row.userAgent)
         cur.execute(songplay_table_insert, songplay_data)
 
 
 def process_data(cur, conn, filepath, func):
+    """Process a directory of files.
+
+    Walk through all files inside each sub directory 
+    of given root directory given and process each file 
+    with the given `func` callback.
+
+    Parameters: 
+        cur: DB cursor
+        conn: DB connection
+        filepath (str): file path directory containing json files
+        func: callback which will process the files
+
+    Returns:
+        None
+    """
 
     # get all files matching extension from directory
     all_files = []
@@ -90,6 +130,15 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """Does ETL files.
+
+    Given two root directories of data in json format, namely log and 
+    songs data, will load them onto a Database after transforming them 
+    in a suitable format.
+
+    Parameters: None
+    Returns: None
+    """
     conn = psycopg2.connect(
         "host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
